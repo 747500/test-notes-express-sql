@@ -3,6 +3,8 @@ import ObjectId from 'bson-objectid'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
+import { User } from '../../model/index.mjs'
+
 
 function register (req, res) {
 
