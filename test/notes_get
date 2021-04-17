@@ -1,0 +1,6 @@
+#!/bin/bash
+
+TOKEN=`cat ./TOKEN`
+
+http http://127.0.0.1:3001/api/v0/notes/607af7e638c2944a75588ecf -- x-access-token:$TOKEN
+
