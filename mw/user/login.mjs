@@ -24,7 +24,7 @@ function login(req, res) {
 			{ id: user.id },
 			process.env.JWT_SECRET,
 			{
-				expiresIn: 86400 // expires in 24 hours
+				expiresIn: process.env.JWT_EXPIRES
 			}
 		)
 
