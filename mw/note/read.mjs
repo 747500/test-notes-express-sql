@@ -6,7 +6,15 @@ import { Note } from '../../model/index.mjs'
 
 function read (req, res) {
 
-	const id = ObjectId(req.params.id).toString()
+	var id
+
+	try {
+		id = ObjectId(req.params.id).toString()
+	}
+	catch (err) {
+		res.status(400).send('Bad Id')
+		return
+	}
 
 	Note.findOne({
 		attributes: [ 'content', 'createdAt', 'updatedAt' ],

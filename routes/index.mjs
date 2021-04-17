@@ -4,6 +4,7 @@ import bodyParser from 'body-parser'
 
 import * as mw from '../mw/index.mjs'
 
+
 const api = express.Router()
 
 api.use(bodyParser.urlencoded({ extended: false }))
@@ -17,7 +18,7 @@ api.post('/login', mw.user.login)
 
 const notesRouter = express.Router()
 
-notesRouter.use(bodyParser.text())
+notesRouter.use(bodyParser.text({ type: 'text/*', limit: 4096 }))
 
 notesRouter.get('/list', mw.note.list)
 notesRouter.put('/', mw.note.create)
