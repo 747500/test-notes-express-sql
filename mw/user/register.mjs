@@ -28,7 +28,7 @@ function register (req, res) {
 		res.status(200).send(
 			{
 				auth: true,
-				token: token
+				token
 			}
 		)
 	})

@@ -5,7 +5,7 @@ function verify (req, res, next) {
 
 	var token = req.headers['x-access-token'];
 	if (null == token) {
-		res.status(403).send({ auth: false, message: 'No token provided.' })
+		res.status(403).send({ auth: false, message: 'No token provided' })
 		return
 	}
 
@@ -13,7 +13,7 @@ function verify (req, res, next) {
 		if (err) {
 			res.status(500).send({
 				auth: false,
-				message: 'Failed to authenticate token.'
+				message: 'Failed to authenticate token'
 			})
 			return
 		}

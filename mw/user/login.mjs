@@ -28,7 +28,7 @@ function login(req, res) {
 			}
 		)
 
-		res.status(200).send({ auth: true, token: token });
+		res.status(200).send({ auth: true, token });
 	})
 	.catch(err => {
 		console.error(err)

@@ -49,18 +49,11 @@ const router = express.Router()
 router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
 
-router.post('/register',
-	mw.user.register
-)
+router.post('/register', mw.user.register)
 
-router.get('/me',
-	mw.user.verify,
-	mw.user.info
-)
+router.get('/me', mw.user.verify, mw.user.info)
 
-router.post('/login',
-	mw.user.login
-)
+router.post('/login', mw.user.login)
 
 const notesRouter = express.Router()
 
@@ -79,5 +72,5 @@ router.get('/shared/:id', hello)
 app.use('/api/v0', router)
 
 app.listen(port, () => {
-	console.log(`Example app listening at http://localhost:${port}`)
+	console.log(`Example "Notes" app listening at http://localhost:${port}`)
 })
