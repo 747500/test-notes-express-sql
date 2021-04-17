@@ -13,8 +13,9 @@ import cors from 'cors'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 
-import { User, Note } from './model/index.mjs'
+import { User } from './model/index.mjs'
 
+import * as mw from './mw/index.mjs'
 
 //const SqliteStore = sqliteStoreFactory.default(session)
 const app = express()
@@ -173,135 +174,11 @@ const notesRouter = express.Router()
 
 notesRouter.use(bodyParser.text())
 
-notesRouter.get('/list',
-	(req, res) => {
-		Note.findAll(
-			{
-				offset: 0,
-				limit: 5,
-				attributes: [ 'id', 'createdAt', 'updatedAt' ],
-				where: {
-					UserId: req.UserId
-				}
-			}
-		)
-		.then(list => {
-			list = list.map(note => note.toJSON())
-			res.status(200).send(list)
-		})
-		.catch(err => {
-			console.error(err)
-			res.status(500).send('Error on the server.')
-		})
-	}
-)
-
-notesRouter.get('/:id',
-	(req, res) => {
-
-		Note.findOne({
-			attributes: [ 'content', 'createdAt', 'updatedAt' ],
-			where: {
-				id: req.params.id,
-				UserId: req.UserId
-			}
-		})
-		.then(note => {
-			if (null == note) {
-				res.status(404).send('Not Found')
-				return
-			}
-
-			const lastModified = new Date(note.updatedAt)
-			const created = new Date(note.createdAt)
-
-			res.set({
-				'Last-Modified': lastModified.toUTCString(),
-				'Date': created.toUTCString(),
-			})
-
-			res.status(200).send(note.content)
-		})
-		.catch(err => {
-			console.error(err)
-			res.status(500).send('Error on the server.')
-		})
-	}
-)
-
-notesRouter.put('/',
-	(req, res) => {
-		const id = ObjectId().toString()
-
-		Note.create({
-			id,
-			UserId: req.UserId,
-			content: req.body
-		})
-		.then(result => {
-			res.status(200).send({ id })
-		})
-		.catch(err => {
-			console.error(err)
-			res.status(500).send('Error on the server.')
-		})
-	}
-)
-
-notesRouter.post('/:id',
-	(req, res) => {
-		const id = ObjectId(req.params.id).toString()
-
-		Note.update(
-			{
-				content: req.body,
-			},
-			{
-				where: {
-					id,
-					UserId: req.UserId,
-				}
-			}
-		)
-		.then(result => {
-			if (1 !== result[0]) {
-				res.status(404).send('Not Found')
-				return
-			}
-
-			res.status(200).send('Ok')
-		})
-		.catch(err => {
-			console.error(err)
-			res.status(500).send('Error on the server.')
-		})
-	}
-)
-
-notesRouter.delete('/:id',
-	(req, res) => {
-		const id = ObjectId(req.params.id).toString()
-
-		Note.destroy({
-			where: {
-				id,
-				UserId: req.UserId,
-			}
-		})
-		.then(result => {
-			if (1 !== result[0]) {
-				res.status(404).send('Not Found')
-				return
-			}
-
-			res.status(200).send('Ok')
-		})
-		.catch(err => {
-			console.error(err)
-			res.status(500).send('Error on the server.')
-		})
-	}
-)
+notesRouter.get('/list', mw.note.list)
+notesRouter.put('/', mw.note.create)
+notesRouter.get('/:id', mw.note.read)
+notesRouter.post('/:id', mw.note.update)
+notesRouter.delete('/:id', mw.note.remove)
 
 router.use('/notes', verifyToken, notesRouter)
 router.get('/shared/:id', hello)
