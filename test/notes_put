@@ -1,6 +1,8 @@
 #!/bin/bash
 
 TOKEN=`cat ./TOKEN`
+DDD=`date`
 
-echo -n "Second note\nmultiline text." | http PUT http://127.0.0.1:3001/api/v0/notes -- content-type:text/plain x-access-token:$TOKEN
+echo -ne "${DDD} thrid note\nmultiline text." | \
+http PUT http://127.0.0.1:3001/api/v0/notes -- content-type:text/plain x-access-token:$TOKEN
 
