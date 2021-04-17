@@ -7,47 +7,13 @@ import express from 'express'
 import bodyParser from 'body-parser'
 //import session from 'express-session'
 //import sqliteStoreFactory from 'express-session-sqlite'
-import ObjectID from 'bson-objectid'
+import ObjectId from 'bson-objectid'
 import morgan from 'morgan'
 import cors from 'cors'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 
-import sequelizejs from 'sequelize'
-const { Sequelize, DataTypes, Model } = sequelizejs
-
-const sequelize = new Sequelize('sqlite::memory')
-
-class User extends Model {}
-
-User.init(
-	{
-		id: {
-			type: DataTypes.STRING(24),
-			primaryKey: true,
-		},
-		name: {
-			type: DataTypes.STRING(32),
-			allowNull: false,
-			unique: true,
-		},
-		email: {
-			type: DataTypes.STRING(255),
-			allowNull: false,
-			unique: true,
-		},
-		password: {
-			type: DataTypes.STRING(32),
-			allowNull: false
-		}
-	},
-	{
-		sequelize,
-		timestamps: true,
-	}
-)
-
-User.sync()
+import { User, Note } from './model/index.mjs'
 
 
 //const SqliteStore = sqliteStoreFactory.default(session)
@@ -90,7 +56,7 @@ router.post('/register',
 	(req, res) => {
 
 		const hashedPassword = bcrypt.hashSync(req.body.password, 8);
-		const id = ObjectID().toString()
+		const id = ObjectId().toString()
 
 		User.create({
 			id,
@@ -141,7 +107,7 @@ function verifyToken(req, res, next) {
 
 		console.log('* verifyToken:\n', decoded)
 
-		req.userId = decoded.id;
+		req.UserId = decoded.id;
 
 		next()
 	})
@@ -151,7 +117,7 @@ router.get('/me',
 	verifyToken,
 	(req, res) => {
 
-		User.findByPk(req.userId)
+		User.findByPk(req.UserId)
 		.then(user => {
 			if (null == user) {
 				res.status(404).send("No user found.")
@@ -205,11 +171,137 @@ router.post('/login',
 
 const notesRouter = express.Router()
 
-notesRouter.get('/list', hello)
-notesRouter.get('/:id', hello)
-notesRouter.put('/', hello)
-notesRouter.post('/:id', hello)
-notesRouter.delete('/:id', hello)
+notesRouter.use(bodyParser.text())
+
+notesRouter.get('/list',
+	(req, res) => {
+		Note.findAll(
+			{
+				offset: 0,
+				limit: 5,
+				attributes: [ 'id', 'createdAt', 'updatedAt' ],
+				where: {
+					UserId: req.UserId
+				}
+			}
+		)
+		.then(list => {
+			list = list.map(note => note.toJSON())
+			res.status(200).send(list)
+		})
+		.catch(err => {
+			console.error(err)
+			res.status(500).send('Error on the server.')
+		})
+	}
+)
+
+notesRouter.get('/:id',
+	(req, res) => {
+
+		Note.findOne({
+			attributes: [ 'content', 'createdAt', 'updatedAt' ],
+			where: {
+				id: req.params.id,
+				UserId: req.UserId
+			}
+		})
+		.then(note => {
+			if (null == note) {
+				res.status(404).send('Not Found')
+				return
+			}
+
+			const lastModified = new Date(note.updatedAt)
+			const created = new Date(note.createdAt)
+
+			res.set({
+				'Last-Modified': lastModified.toUTCString(),
+				'Date': created.toUTCString(),
+			})
+
+			res.status(200).send(note.content)
+		})
+		.catch(err => {
+			console.error(err)
+			res.status(500).send('Error on the server.')
+		})
+	}
+)
+
+notesRouter.put('/',
+	(req, res) => {
+		const id = ObjectId().toString()
+
+		Note.create({
+			id,
+			UserId: req.UserId,
+			content: req.body
+		})
+		.then(result => {
+			res.status(200).send({ id })
+		})
+		.catch(err => {
+			console.error(err)
+			res.status(500).send('Error on the server.')
+		})
+	}
+)
+
+notesRouter.post('/:id',
+	(req, res) => {
+		const id = ObjectId(req.params.id).toString()
+
+		Note.update(
+			{
+				content: req.body,
+			},
+			{
+				where: {
+					id,
+					UserId: req.UserId,
+				}
+			}
+		)
+		.then(result => {
+			if (1 !== result[0]) {
+				res.status(404).send('Not Found')
+				return
+			}
+
+			res.status(200).send('Ok')
+		})
+		.catch(err => {
+			console.error(err)
+			res.status(500).send('Error on the server.')
+		})
+	}
+)
+
+notesRouter.delete('/:id',
+	(req, res) => {
+		const id = ObjectId(req.params.id).toString()
+
+		Note.destroy({
+			where: {
+				id,
+				UserId: req.UserId,
+			}
+		})
+		.then(result => {
+			if (1 !== result[0]) {
+				res.status(404).send('Not Found')
+				return
+			}
+
+			res.status(200).send('Ok')
+		})
+		.catch(err => {
+			console.error(err)
+			res.status(500).send('Error on the server.')
+		})
+	}
+)
 
 router.use('/notes', verifyToken, notesRouter)
 router.get('/shared/:id', hello)
