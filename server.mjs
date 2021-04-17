@@ -13,6 +13,43 @@ import cors from 'cors'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 
+import sequelizejs from 'sequelize'
+const { Sequelize, DataTypes, Model } = sequelizejs
+
+const sequelize = new Sequelize('sqlite::memory')
+
+class User extends Model {}
+
+User.init(
+	{
+		id: {
+			type: DataTypes.STRING(24),
+			primaryKey: true,
+		},
+		name: {
+			type: DataTypes.STRING(32),
+			allowNull: false,
+			unique: true,
+		},
+		email: {
+			type: DataTypes.STRING(255),
+			allowNull: false,
+			unique: true,
+		},
+		password: {
+			type: DataTypes.STRING(32),
+			allowNull: false
+		}
+	},
+	{
+		sequelize,
+		timestamps: true,
+	}
+)
+
+User.sync()
+
+
 //const SqliteStore = sqliteStoreFactory.default(session)
 const app = express()
 const port = process.env.HTTP_PORT
@@ -93,7 +130,7 @@ function verifyToken(req, res, next) {
 		return
 	}
 
-	jwt.verify(token, config.secret, (err, decoded) => {
+	jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
 		if (err) {
 			res.status(500).send({
 				auth: false,
@@ -101,6 +138,8 @@ function verifyToken(req, res, next) {
 			})
 			return
 		}
+
+		console.log('* verifyToken:\n', decoded)
 
 		req.userId = decoded.id;
 
@@ -112,13 +151,14 @@ router.get('/me',
 	verifyToken,
 	(req, res) => {
 
-		User.findById(req.userId)
+		User.findByPk(req.userId)
 		.then(user => {
-			if (!user) {
+			if (null == user) {
 				res.status(404).send("No user found.")
 				return
 			}
-			const { password, ...result } = user
+
+			const { password, ...result } = user.toJSON()
 			res.status(200).send(result)
 		})
 		.catch(err => {
@@ -132,7 +172,7 @@ router.get('/me',
 router.post('/login',
 	(req, res) => {
 
-		User.findOne({ email: req.body.email })
+		User.findOne({ where: { email: req.body.email } })
 		.then(user => {
 			if (null == user) {
 				res.status(404).send('No user found.')
