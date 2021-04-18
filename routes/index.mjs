@@ -30,7 +30,7 @@ const sharedRouter = express.Router()
 sharedRouter.use(bodyParser.json())
 sharedRouter.get('/:id', mw.checkId, mw.share.read)
 sharedRouter.patch('/:id', mw.checkId, mw.share.update)
-api.use('/shared', sharedRouter)
+api.use('/share', sharedRouter)
 
 
 api.get('/public/:id', mw.checkId, mw.note.shared)

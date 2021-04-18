@@ -3,5 +3,5 @@
 TOKEN=`cat ./TOKEN`
 
 echo '{ "enabled": false }' | \
-http PATCH http://127.0.0.1:3001/api/v0/shared/607b796b09fbddf72a818a34 -- content-type:application/json x-access-token:$TOKEN
+http PATCH http://127.0.0.1:3001/api/v0/share/607b796b09fbddf72a818a34 -- content-type:application/json x-access-token:$TOKEN
 
