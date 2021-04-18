@@ -10,11 +10,9 @@ const sequelize = new Sequelize(process.env.DB_URL)
 
 const timestamps = true
 
-class User extends Model {}
-User.init(UserSchema, { sequelize, timestamps })
+const User = sequelize.define('User', UserSchema, { timestamps })
 
-class Note extends Model {}
-Note.init(NoteSchema, { sequelize, timestamps })
+const Note = sequelize.define('Note', NoteSchema, { timestamps })
 
 
 User.hasMany(Note, {
@@ -24,6 +22,7 @@ User.hasMany(Note, {
 
 User.sync()
 Note.sync()
+
 
 export {
 	sequelize,
