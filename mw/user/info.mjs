@@ -10,7 +10,7 @@ function info (req, res) {
 				return
 			}
 
-			const { password, ...result } = user.toJSON()
+			const { id, password, ...result } = user.toJSON()
 			res.status(200).send(result)
 		})
 		.catch(err => {
