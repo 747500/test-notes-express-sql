@@ -4,34 +4,18 @@ import bodyParser from 'body-parser'
 
 import * as mw from '../mw/index.mjs'
 
+import { user } from './user.mjs'
+import { notes } from './notes.mjs'
+import { share } from './share.mjs'
+
 
 const api = express.Router()
 
+api.use('/user', user)
 
-const userRouter = express.Router()
-userRouter.use(bodyParser.json())
-userRouter.post('/register', mw.user.register)
-userRouter.post('/login', mw.user.login)
-userRouter.get('/info', mw.user.verify, mw.user.info)
-api.use('/user', userRouter)
+api.use('/notes', mw.user.verify, notes)
 
-
-const notesRouter = express.Router()
-notesRouter.use(bodyParser.raw({ type: 'text/*', limit: 5000 })) // UTF8/16
-notesRouter.get('/list', mw.note.list)
-notesRouter.put('/', mw.checkBody, mw.note.create)
-notesRouter.get('/:id', mw.checkId, mw.note.read)
-notesRouter.post('/:id', mw.checkId, mw.checkBody, mw.note.update)
-notesRouter.delete('/:id', mw.checkId, mw.note.remove)
-api.use('/notes', mw.user.verify, notesRouter)
-
-
-const sharedRouter = express.Router()
-sharedRouter.use(bodyParser.json())
-sharedRouter.get('/:id', mw.checkId, mw.share.read)
-sharedRouter.patch('/:id', mw.checkId, mw.share.update)
-api.use('/share', sharedRouter)
-
+api.use('/share', share)
 
 api.get('/public/:id', mw.checkId, mw.note.shared)
 
