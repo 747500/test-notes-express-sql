@@ -7,4 +7,5 @@ URL="http://127.0.0.1:3001/api/v0/notes/$NoteId"
 
 echo $URL
 
-http GET "$URL" -- x-access-token:$TOKEN
+http DELETE "$URL" -- x-access-token:$TOKEN
+

@@ -2,5 +2,8 @@
 
 TOKEN=`cat ./TOKEN`
 
-http http://127.0.0.1:3001/api/v0/share/607b796b09fbddf72a818a34 -- content-type:text/plain x-access-token:$TOKEN
+NoteId="$1"
+URL="http://127.0.0.1:3001/api/v0/notes/$NoteId"
+
+http GET "$URL" -- content-type:text/plain x-access-token:$TOKEN
 

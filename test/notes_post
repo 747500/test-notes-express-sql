@@ -1,9 +1,14 @@
 #!/bin/bash
 
 TOKEN=`cat ./TOKEN`
+
+NoteId="$1"
+URL="http://127.0.0.1:3001/api/v0/notes/$NoteId"
+
 DDD=`date`
 
 echo -ne "First note\nmultiline text,\nupdated\nat ${DDD}." | \
- http POST http://127.0.0.1:3001/api/v0/notes/607b5c5eb21be2d4ef6f1f39 \
- -- content-type:text/plain x-access-token:$TOKEN
+ http POST "$URL" -- \
+  content-type:text/plain \
+  x-access-token:$TOKEN
 

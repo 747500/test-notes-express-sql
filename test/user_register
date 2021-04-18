@@ -1,3 +1,15 @@
 #!/bin/bash
 
-http http://127.0.0.1:3001/api/v0/user/register < create_user.json | jq .token | tr -d '"' > TOKEN
+URL="http://127.0.0.1:3001/api/v0/user/register"
+
+http POST "$URL" < create_user.json > /tmp/user_register
+
+TOKEN=`cat /tmp/user_register | jq .token | tr -d '"'`
+
+if [ x"$TOKEN" != x"null" ]; then
+	echo $TOKEN > TOKEN
+fi
+
+cat /tmp/user_register | jq
+
+rm -f /tmp/user_register

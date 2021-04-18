@@ -2,6 +2,9 @@
 
 TOKEN=`cat ./TOKEN`
 
+NoteId="$1"
+URL="http://127.0.0.1:3001/api/v0/share/$NoteId"
+
 echo '{ "enabled": true }' | \
-http PATCH http://127.0.0.1:3001/api/v0/share/607b796d09fbddf72a818a35 -- content-type:application/json x-access-token:$TOKEN
+http PATCH "$URL" -- content-type:application/json x-access-token:$TOKEN
 
