@@ -1,0 +1,4 @@
+#!/bin/bash
+
+http http://127.0.0.1:3001/api/v0/public/607b7b560fa15efa7c73d83b
+

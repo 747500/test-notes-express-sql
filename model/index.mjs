@@ -6,7 +6,6 @@ import { UserSchema } from './User.mjs'
 import { NoteSchema } from './Note.mjs'
 
 
-//const sequelize = new Sequelize('sqlite::memory')
 const sequelize = new Sequelize(process.env.DB_URL)
 
 const timestamps = true

@@ -18,6 +18,12 @@ const NoteSchema = {
 		validate: {
 			len: [ 0, 1000 ]
 		}
+	},
+	shared: {
+		type: DataTypes.STRING(24),
+		defaultValue: null,
+		allowNull: true,
+		unique: true,
 	}
 }
 

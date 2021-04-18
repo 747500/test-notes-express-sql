@@ -1,14 +1,12 @@
-
 import { Note } from '../../model/index.mjs'
 
 
-function read (req, res) {
+function shared (req, res) {
 
 	Note.findOne({
 		attributes: [ 'content', 'createdAt', 'updatedAt' ],
 		where: {
-			id: req.params.id,
-			UserId: req.UserId
+			shared: req.params.id
 		}
 	})
 	.then(note => {
@@ -35,5 +33,5 @@ function read (req, res) {
 
 
 export {
-	read
+	shared
 }

@@ -1,6 +1,0 @@
-#!/bin/bash
-
-TOKEN=`cat ./TOKEN`
-
-http http://127.0.0.1:3001/api/v0/me -- x-access-token:$TOKEN
-

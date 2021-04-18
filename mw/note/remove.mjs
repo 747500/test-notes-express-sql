@@ -1,23 +1,12 @@
 
-import ObjectId from 'bson-objectid'
-
 import { Note } from '../../model/index.mjs'
 
 
 function remove (req, res) {
-	var id
-
-	try {
-		id = ObjectId(req.params.id).toString()
-	}
-	catch (err) {
-		res.status(400).send('Bad Id')
-		return
-	}
 
 	Note.destroy({
 		where: {
-			id,
+			id: req.params.id,
 			UserId: req.UserId,
 		}
 	})
