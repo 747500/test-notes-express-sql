@@ -17,11 +17,11 @@ api.use('/user', userRouter)
 
 
 const notesRouter = express.Router()
-notesRouter.use(bodyParser.text({ type: 'text/*', limit: 5000 })) // UTF8/16
+notesRouter.use(bodyParser.raw({ type: 'text/*', limit: 5000 })) // UTF8/16
 notesRouter.get('/list', mw.note.list)
-notesRouter.put('/', mw.note.create)
+notesRouter.put('/', mw.checkBody, mw.note.create)
 notesRouter.get('/:id', mw.checkId, mw.note.read)
-notesRouter.post('/:id', mw.checkId, mw.note.update)
+notesRouter.post('/:id', mw.checkId, mw.checkBody, mw.note.update)
 notesRouter.delete('/:id', mw.checkId, mw.note.remove)
 api.use('/notes', mw.user.verify, notesRouter)
 

@@ -6,7 +6,7 @@ function update (req, res) {
 
 	Note.update(
 		{
-			content: req.body,
+			content: req.body.toString(),
 		},
 		{
 			where: {

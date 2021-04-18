@@ -10,7 +10,7 @@ function create(req, res) {
 	Note.create({
 		id,
 		UserId: req.UserId,
-		content: req.body
+		content: req.body.toString()
 	})
 	.then(result => {
 		res.status(200).send({ id })
