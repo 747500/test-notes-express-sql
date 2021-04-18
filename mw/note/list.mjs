@@ -8,7 +8,7 @@ function list (req, res) {
 		{
 			offset: 0,
 			limit: 5,
-			attributes: [ 'id', 'createdAt', 'updatedAt' ],
+			attributes: [ 'id', 'createdAt', 'updatedAt', 'shared' ],
 			where: {
 				UserId: req.UserId
 			}
