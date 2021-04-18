@@ -10,6 +10,23 @@ function verify (req, res, next) {
 	}
 
 	jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+
+		if (err instanceof jwt.TokenExpiredError) {
+			res.status(403).send({
+				auth: false,
+				message: 'Token expired'
+			})
+			return
+		}
+
+		if (err instanceof jwt.JsonWebTokenError) {
+			res.status(400).send({
+				auth: false,
+				message: 'Bad token'
+			})
+			return
+		}
+
 		if (err) {
 			console.error(err)
 			res.status(500).send({
@@ -18,8 +35,6 @@ function verify (req, res, next) {
 			})
 			return
 		}
-
-		console.log('* verifyToken:\n', decoded)
 
 		req.UserId = decoded.id;
 
