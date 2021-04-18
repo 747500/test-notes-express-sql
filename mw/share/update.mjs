@@ -1,4 +1,6 @@
 
+import ObjectId from 'bson-objectid'
+
 import { Note } from '../../model/index.mjs'
 
 function update (req, res) {
