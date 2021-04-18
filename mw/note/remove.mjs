@@ -11,7 +11,10 @@ function remove (req, res) {
 		}
 	})
 	.then(result => {
-		if (1 !== result[0]) {
+
+		console.log(result)
+
+		if (1 !== result) {
 			res.status(404).send('Not Found')
 			return
 		}

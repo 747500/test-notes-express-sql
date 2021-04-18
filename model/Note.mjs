@@ -2,16 +2,13 @@
 import sequelizejs from 'sequelize'
 const { DataTypes } = sequelizejs
 
-import { isObjectId } from './validators/objectid.mjs'
+import { isNotEmpty, isMongoId } from './validate/index.mjs'
 
 const NoteSchema = {
 	id: {
 		type: DataTypes.STRING(24),
 		primaryKey: true,
-		validate: {
-			len: 24,
-			isObjectId
-		}
+		validate: { isMongoId }
 	},
 	content: {
 		type: DataTypes.TEXT,
@@ -24,6 +21,11 @@ const NoteSchema = {
 		defaultValue: null,
 		allowNull: true,
 		unique: true,
+		validate: {
+			fn (value) {
+				return null == value || isMongoId(value)
+			}
+		}
 	}
 }
 

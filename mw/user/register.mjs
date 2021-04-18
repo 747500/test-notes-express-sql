@@ -2,6 +2,7 @@
 import ObjectId from 'bson-objectid'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import sequelize from 'sequelize'
 
 import { User } from '../../model/index.mjs'
 
@@ -22,7 +23,7 @@ function register (req, res) {
 			{ id },
 			process.env.JWT_SECRET,
 			{
-				expiresIn: process.env.JWT_EXPIRES // expires in 24 hours
+				expiresIn: process.env.JWT_EXPIRES
 			}
 		)
 	})
@@ -35,8 +36,18 @@ function register (req, res) {
 		)
 	})
 	.catch(err => {
+		if (err instanceof sequelize.ValidationError) {
+			res.status(400).send(err.errors.map(err => {
+				return {
+					message: err.message,
+					path: err.path
+				}
+			}))
+			return
+		}
+
 		console.error(err)
-		res.status(500).send("There was a problem registering the user.")
+		res.status(500).send("Can't register a user")
 	})
 
 }

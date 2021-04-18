@@ -21,6 +21,7 @@
     "morgan": "^1.10.0",
     "sequelize": "^6.6.2",
     "sqlite3": "^5.0.2",
-    "utf-8-validate": "^5.0.4"
+    "utf-8-validate": "^5.0.4",
+    "validator": "^13.5.2"
   }
 }
