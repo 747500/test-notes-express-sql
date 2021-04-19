@@ -1,4 +1,5 @@
 
+import validator from 'validator'
 
 
 export function isEmail (value) {

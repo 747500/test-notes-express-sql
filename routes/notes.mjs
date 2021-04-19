@@ -15,7 +15,7 @@ notes.get('/list',
 
 notes.put('/',
 	mw.checkBody,
-	mw.note.create
+	mw.note.create,
 	mw.error.validation
 )
 
@@ -27,7 +27,7 @@ notes.get('/:id',
 notes.post('/:id',
 	mw.checkId,
 	mw.checkBody,
-	mw.note.update
+	mw.note.update,
 	mw.error.validation
 )
 
