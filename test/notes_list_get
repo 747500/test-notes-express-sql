@@ -2,5 +2,10 @@
 
 TOKEN=`cat ./TOKEN`
 
-http http://127.0.0.1:3001/api/v0/notes/list -- x-access-token:$TOKEN
+LIMIT=10
+OFFSET=0
+
+URL="http://127.0.0.1:3001/api/v0/notes/list?limit=$LIMIT&offset=$OFFSET"
+
+http "$URL" -- x-access-token:$TOKEN
 
