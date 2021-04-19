@@ -19,6 +19,7 @@ api.use('/share', share)
 
 api.get('/public/:id', mw.checkId, mw.note.shared)
 
+api.use(mw.error.internal)
 
 export {
 	api

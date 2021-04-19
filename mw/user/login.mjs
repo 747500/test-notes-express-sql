@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 import { User } from '../../model/index.mjs'
 
 
-function login(req, res) {
+function login(req, res, next) {
 
 	User.findOne({ where: { email: req.body.email } })
 	.then(user => {
@@ -30,10 +30,7 @@ function login(req, res) {
 
 		res.status(200).send({ auth: true, token });
 	})
-	.catch(err => {
-		console.error(err)
-		res.status(500).send('Error on the server.')
-	})
+	.catch(next)
 
 }
 

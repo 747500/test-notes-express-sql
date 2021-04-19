@@ -1,7 +1,7 @@
 
 import { User } from '../../model/index.mjs'
 
-function info (req, res) {
+function info (req, res, next) {
 
 		User.findByPk(req.UserId)
 		.then(user => {
@@ -13,10 +13,7 @@ function info (req, res) {
 			const { id, password, ...result } = user.toJSON()
 			res.status(200).send(result)
 		})
-		.catch(err => {
-			console.error(err)
-			res.status(500).send("There was a problem finding the user.")
-		})
+		.catch(next)
 
 	}
 

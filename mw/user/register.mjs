@@ -7,7 +7,7 @@ import sequelize from 'sequelize'
 import { User } from '../../model/index.mjs'
 
 
-function register (req, res) {
+function register (req, res, next) {
 
 	const hashedPassword = bcrypt.hashSync(req.body.password, 8);
 	const id = ObjectId().toString()
@@ -35,20 +35,7 @@ function register (req, res) {
 			}
 		)
 	})
-	.catch(err => {
-		if (err instanceof sequelize.ValidationError) {
-			res.status(400).send(err.errors.map(err => {
-				return {
-					message: err.message,
-					path: err.path
-				}
-			}))
-			return
-		}
-
-		console.error(err)
-		res.status(500).send("Can't register a user")
-	})
+	.catch(next)
 
 }
 

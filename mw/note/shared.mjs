@@ -1,7 +1,8 @@
+
 import { Note } from '../../model/index.mjs'
 
 
-function shared (req, res) {
+function shared (req, res, next) {
 
 	Note.findOne({
 		attributes: [ 'content', 'createdAt', 'updatedAt' ],
@@ -25,10 +26,7 @@ function shared (req, res) {
 
 		res.status(200).send(note.content)
 	})
-	.catch(err => {
-		console.error(err)
-		res.status(500).send('Error on the server.')
-	})
+	.catch(next)
 }
 
 

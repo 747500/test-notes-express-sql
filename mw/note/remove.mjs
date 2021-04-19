@@ -2,7 +2,7 @@
 import { Note } from '../../model/index.mjs'
 
 
-function remove (req, res) {
+function remove (req, res, next) {
 
 	Note.destroy({
 		where: {
@@ -21,10 +21,7 @@ function remove (req, res) {
 
 		res.status(200).send('Ok')
 	})
-	.catch(err => {
-		console.error(err)
-		res.status(500).send('Error on the server.')
-	})
+	.catch(next)
 }
 
 export {

@@ -1,7 +1,7 @@
 
 import { Note } from '../../model/index.mjs'
 
-function read (req, res) {
+function read (req, res, next) {
 
 	return Note.findOne({
 		attributes: [ 'shared' ],
@@ -16,10 +16,7 @@ function read (req, res) {
 		res.status(200).send({ publicId: note.shared })
 
 	})
-	.catch(err => {
-		console.error(err)
-		res.status(500).send('Server failed to save')
-	})
+	.catch(next)
 
 }
 

@@ -3,7 +3,8 @@ import ObjectId from 'bson-objectid'
 
 import { Note } from '../../model/index.mjs'
 
-function update (req, res) {
+
+function update (req, res, next) {
 
 	const status = req.body.enabled
 
@@ -34,10 +35,7 @@ function update (req, res) {
 			res.status(200).send({ publicId: note.shared })
 		})
 	})
-	.catch(err => {
-		console.error(err)
-		res.status(500).send('Failed to save')
-	})
+	.catch(next)
 }
 
 export {

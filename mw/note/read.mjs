@@ -2,7 +2,7 @@
 import { Note } from '../../model/index.mjs'
 
 
-function read (req, res) {
+function read (req, res, next) {
 
 	Note.findOne({
 		attributes: [ 'content', 'createdAt', 'updatedAt' ],
@@ -27,10 +27,7 @@ function read (req, res) {
 
 		res.status(200).send(note.content)
 	})
-	.catch(err => {
-		console.error(err)
-		res.status(500).send('Error on the server.')
-	})
+	.catch(next)
 }
 
 

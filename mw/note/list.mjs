@@ -2,7 +2,7 @@
 import { Note } from '../../model/index.mjs'
 
 
-function list (req, res) {
+function list (req, res, next) {
 
 	Note.findAll(
 		{
@@ -18,10 +18,7 @@ function list (req, res) {
 		list = list.map(note => note.toJSON())
 		res.status(200).send(list)
 	})
-	.catch(err => {
-		console.error(err)
-		res.status(500).send('Error on the server.')
-	})
+	.catch(next)
 }
 
 export {
