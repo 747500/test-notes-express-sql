@@ -10,7 +10,10 @@ function login(req, res, next) {
 	User.findOne({ where: { email: req.body.email } })
 	.then(user => {
 		if (null == user) {
-			res.status(404).send('No user found.')
+			res.status(401).send({
+				auth: false,
+				token: null
+			})
 			return
 		}
 
@@ -24,11 +27,14 @@ function login(req, res, next) {
 			{ id: user.id },
 			process.env.JWT_SECRET,
 			{
-				expiresIn: process.env.JWT_EXPIRES
+				expiresIn: parseInt(process.env.JWT_EXPIRES, 10)
 			}
 		)
 
-		res.status(200).send({ auth: true, token });
+		res.status(200).send({
+			auth: true,
+			token
+		})
 	})
 	.catch(next)
 

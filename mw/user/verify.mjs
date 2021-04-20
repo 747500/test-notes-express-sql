@@ -5,7 +5,10 @@ function verify (req, res, next) {
 
 	var token = req.headers['x-access-token'];
 	if (null == token) {
-		res.status(403).send({ auth: false, message: 'No token provided' })
+		res.status(403).send({
+			auth: false,
+			message: 'No token provided'
+		})
 		return
 	}
 
@@ -36,7 +39,7 @@ function verify (req, res, next) {
 			return
 		}
 
-		req.UserId = decoded.id;
+		req.UserId = decoded.id
 
 		next()
 	})

@@ -9,7 +9,7 @@ import { User } from '../../model/index.mjs'
 
 function register (req, res, next) {
 
-	const hashedPassword = bcrypt.hashSync(req.body.password, 8);
+	const hashedPassword = bcrypt.hashSync(req.body.password, 8)
 	const id = ObjectId().toString()
 
 	User.create({
