@@ -31,11 +31,7 @@ function verify (req, res, next) {
 		}
 
 		if (err) {
-			console.error(err)
-			res.status(500).send({
-				auth: false,
-				message: 'Failed to authenticate token'
-			})
+			next(err)
 			return
 		}
 
