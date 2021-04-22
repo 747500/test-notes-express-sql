@@ -23,7 +23,7 @@ function register (req, res, next) {
 			{ id },
 			process.env.JWT_SECRET,
 			{
-				expiresIn: process.env.JWT_EXPIRES
+				expiresIn: parseInt(process.env.JWT_EXPIRES, 10)
 			}
 		)
 	})
