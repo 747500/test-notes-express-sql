@@ -4,17 +4,20 @@ import { Note } from '../../model/index.mjs'
 
 function list (req, res, next) {
 
+	console.log(req.query)
+
+/*
 	const limit = parseInt(req.query.limit, 10) || 20
 	const offset = parseInt(req.query.offset, 10) || 0
 
 	if (50 < limit) {
 		limit = 50
 	}
-
+*/
 	Note.findAll(
 		{
-			offset,
-			limit,
+			offset: req.query.offset,
+			limit: req.query.limit,
 			attributes: [ 'id', 'createdAt', 'updatedAt', 'shared' ],
 			where: {
 				UserId: req.UserId
