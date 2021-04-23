@@ -3,6 +3,7 @@ import ajv from '../ajv.mjs'
 
 
 const schema = {
+	$id: 'validate.query.LimitOffset',
     type: 'object',
     properties: {
         limit: {
@@ -21,7 +22,7 @@ const schema = {
     additionalProperties: false
 }
 
-ajv.addSchema(schema, 'validate.query.LimitOffset')
+ajv.addSchema(schema)
 
 
 function LimitOffset(req, res, next) {
