@@ -10,7 +10,7 @@ const notes = express.Router()
 notes.use(bodyParser.raw({ type: 'text/*', limit: 5000 })) // UTF8
 
 notes.get('/list',
-	mw.validate.queryLimitOffset,
+	mw.validate.query.LimitOffset,
 	mw.note.list
 )
 

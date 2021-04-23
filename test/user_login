@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #http http://127.0.0.1:3001/api/v0/user/login < login.json | jq .token | tr -d '"' > TOKEN
-http http://127.0.0.1:3001/api/v0/user/login -- email="user2@mail.com" password="password1" | jq .token | tr -d '"' > TOKEN
+http http://127.0.0.1:3001/api/v0/user/login -- email="user1@mail.com" password="password1" | jq .token | tr -d '"' > TOKEN
