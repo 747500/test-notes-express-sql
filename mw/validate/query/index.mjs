@@ -10,12 +10,12 @@ const schema = {
             "type": "integer",
             "default": 25,
             "minimum": 1,
+            "maximum": 50,
         },
         "offset": {
             "type": "integer",
             "default": 0,
             "minimum": 0,
-            "maximum": 50,
         }
     },
 	"anyOf": [ // not needed because of "useDefaults: true"
