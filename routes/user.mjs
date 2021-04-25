@@ -24,6 +24,10 @@ user.get('/info',
 	mw.user.info
 )
 
+user.post('/logoutAll',
+	mw.user.verify,
+	mw.user.logoutAll
+)
 
 export {
 	user,

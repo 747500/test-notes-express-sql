@@ -1,6 +1,8 @@
 
 import jwt from 'jsonwebtoken'
 
+import { jwtexp } from '../../services/index.mjs'
+
 function verify (req, res, next) {
 
 	var token = req.headers['x-access-token'];
@@ -35,9 +37,19 @@ function verify (req, res, next) {
 			return
 		}
 
+		if (jwtexp.isExpired(decoded)) {
+			res.status(400).send({
+				auth: false,
+				message: 'Token logged out'
+			})
+			return
+		}
+
+		req.jwt = decoded
 		req.UserId = decoded.id
 
 		next()
+
 	})
 }
 
