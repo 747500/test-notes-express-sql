@@ -23,11 +23,11 @@ function update (req, res, next) {
 			return
 		}
 
-		if (true === status && null == note.shared) {
+		if (true === status && null == note.shared) { // ==
 			note.shared = ObjectId().toString()
 		}
 
-		if (false === status && null != note.shared) {
+		if (false === status && null != note.shared) {  // !=
 			note.shared = null
 		}
 

@@ -9,7 +9,7 @@ function login(req, res, next) {
 
 	User.findOne({ where: { email: req.body.email } })
 	.then(user => {
-		if (null == user) {
+		if (null == user) { // ==
 			res.status(401).send({
 				auth: false,
 				token: null

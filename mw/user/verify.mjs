@@ -5,8 +5,9 @@ import { jwtexp } from '../../services/index.mjs'
 
 function verify (req, res, next) {
 
-	var token = req.headers['x-access-token'];
-	if (null == token) {
+	const token = req.headers['x-access-token']
+
+	if (null == token) { // ==
 		res.status(403).send({
 			auth: false,
 			message: 'No token provided'

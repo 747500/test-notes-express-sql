@@ -5,7 +5,7 @@ function info (req, res, next) {
 
 		User.findByPk(req.UserId)
 		.then(user => {
-			if (null == user) {
+			if (null == user) { // ==
 				res.status(404).send("Not Found")
 				return
 			}

@@ -12,7 +12,7 @@ function read (req, res, next) {
 		}
 	})
 	.then(note => {
-		if (null == note) {
+		if (null == note) { // ==
 			res.status(404).send('Not Found')
 			return
 		}
